@@ -3,15 +3,15 @@ import 'thermal_printer_service.dart';
 import 'receipt_data.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _addLogo = false;
-  TextEditingController _logoSizeController = TextEditingController();
+  final bool _addLogo = false;
+  final TextEditingController _logoSizeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
