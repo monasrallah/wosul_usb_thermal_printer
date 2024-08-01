@@ -33,6 +33,7 @@ dependencies:
   usb_serial: ^0.4.0
   esc_pos_utils: ^1.1.0
   image: ^3.3.0
+  charset_converter: ^2.2.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 
