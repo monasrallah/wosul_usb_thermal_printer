@@ -5,13 +5,10 @@ import 'package:image/image.dart' as img;
 import 'package:usb_serial/usb_serial.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'receipt_data.dart';
+import 'dart:convert' show utf8;
 
 class ThermalPrinterService {
   // Function to encode Arabic text
-  Future<Uint8List> encodeArabicText(String text) async {
-    List<int> bytes = await CharsetConverter.encode('windows-1256', text);
-    return Uint8List.fromList(bytes);
-  }
 
   Future<void> printReceipt(
       ReceiptData receipt, bool addLogo, int logoSize) async {
@@ -125,9 +122,9 @@ class ThermalPrinterService {
             styles: const PosStyles(
                 align: PosAlign.left, bold: true, height: PosTextSize.size2)),
         PosColumn(
-            textEncoded: await encodeArabicText('ڤيزا'),
+            textEncoded: utf8.encode('فيزا'),
             width: 5,
-            styles: const PosStyles(codeTable: 'PC850',
+            styles: const PosStyles(
                 align: PosAlign.right, bold: true, height: PosTextSize.size2)),
         PosColumn(
             text: '', width: 1, styles: const PosStyles(align: PosAlign.right))
@@ -142,9 +139,9 @@ class ThermalPrinterService {
             styles: const PosStyles(
                 align: PosAlign.left, bold: true, height: PosTextSize.size2)),
         PosColumn(
-            textEncoded: await encodeArabicText('شراء'),
+            textEncoded: utf8.encode('شراء'),
             width: 6,
-            styles: const PosStyles(codeTable: 'PC850',
+            styles: const PosStyles(
                 align: PosAlign.right, bold: true, height: PosTextSize.size2)),
         PosColumn(
             text: '', width: 1, styles: const PosStyles(align: PosAlign.right))
@@ -171,14 +168,14 @@ class ThermalPrinterService {
               align: PosAlign.center, height: PosTextSize.size1));
       bytes += generator.row([
         PosColumn(
-            textEncoded: await encodeArabicText('١٩.٠٠ ر.س'),
+            textEncoded: utf8.encode('١٩.٠٠ ر.س'),
             width: 6,
-            styles: const PosStyles(codeTable: 'PC850',
+            styles: const PosStyles(
                 align: PosAlign.left, bold: true, height: PosTextSize.size2)),
         PosColumn(
-            textEncoded: await encodeArabicText('مبلغ الشراء'),
+            textEncoded: utf8.encode('مبلغ الشراء'),
             width: 5,
-            styles: const PosStyles(codeTable: 'PC850',
+            styles: const PosStyles(
                 align: PosAlign.right, bold: true, height: PosTextSize.size2)),
         PosColumn(
             text: '', width: 1, styles: const PosStyles(align: PosAlign.right))
@@ -201,15 +198,15 @@ class ThermalPrinterService {
             text: '', width: 1, styles: const PosStyles(align: PosAlign.right))
       ]);
 
-      bytes += generator.textEncoded(await encodeArabicText("مقبولة"),
-          styles: const PosStyles(codeTable: 'PC850',
+      bytes += generator.textEncoded(utf8.encode("مقبولة"),
+          styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size2));
       bytes += generator.text("APPROVED",
           styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size2));
       bytes += generator.textEncoded(
-          await encodeArabicText("تم التحقق من هوية حامل الجهاز"),
-          styles: const PosStyles(codeTable: 'PC850',
+          utf8.encode("تم التحقق من هوية حامل الجهاز"),
+          styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size2));
       bytes += generator.text("Device OWNER IDENTITY VERIFIED",
           styles: const PosStyles(
@@ -217,14 +214,14 @@ class ThermalPrinterService {
 
       bytes += generator.row([
         PosColumn(
-            textEncoded: await encodeArabicText('٧٣٠٠٢٣'),
+            textEncoded: utf8.encode('٧٣٠٠٢٣'),
             width: 6,
-            styles: const PosStyles(codeTable: 'PC850',
+            styles: const PosStyles(
                 align: PosAlign.left, bold: true, height: PosTextSize.size2)),
         PosColumn(
-            textEncoded: await encodeArabicText('رمز الموافقة'),
+            textEncoded: utf8.encode('رمز الموافقة'),
             width: 5,
-            styles: const PosStyles(codeTable: 'PC850',
+            styles: const PosStyles(
                 align: PosAlign.right, bold: true, height: PosTextSize.size2)),
         PosColumn(
             text: '', width: 1, styles: const PosStyles(align: PosAlign.right))
@@ -263,24 +260,21 @@ class ThermalPrinterService {
           styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size1));
 
-      bytes += generator.textEncoded(
-          await encodeArabicText("شكرا لاستخدامكم مدى"),
-          styles: const PosStyles(codeTable: 'PC850',
+      bytes += generator.textEncoded(utf8.encode("شكرا لاستخدامكم مدى"),
+          styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size2));
       bytes += generator.text("Thank You For Using Mada",
           styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size2));
-      bytes += generator.textEncoded(
-          await encodeArabicText("يرجى الاحتفاظ بالفاتورة"),
-          styles: const PosStyles(codeTable: 'PC850',
+      bytes += generator.textEncoded(utf8.encode("يرجى الاحتفاظ بالفاتورة"),
+          styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size2));
       bytes += generator.text("Please retain the receipt",
           styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size2));
 
-      bytes += generator.textEncoded(
-          await encodeArabicText("*** نسخة العميل ***"),
-          styles: const PosStyles(codeTable: 'PC850',
+      bytes += generator.textEncoded(utf8.encode("*** نسخة العميل ***"),
+          styles: const PosStyles(
               align: PosAlign.center, height: PosTextSize.size2));
       bytes += generator.text("*** Customer Copy ***",
           styles: const PosStyles(
