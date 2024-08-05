@@ -21,7 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () => _showConfigDialog(context),
+          onPressed: () async {
+            final printerService = ThermalPrinterService();
+            final receipt = ReceiptData.generateSampleReceipt();
+            await printerService.printReceipt(receipt);
+          },
           child: const Text('Config'),
         ),
       ),
@@ -87,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final printerService = ThermalPrinterService();
       final receipt = ReceiptData.generateSampleReceipt();
       final logoSize = int.tryParse(_logoSizeController.text) ?? 150;
-      await printerService.printReceipt(receipt, addLogo, logoSize);
+      // await printerService.printReceipt(receipt, addLogo, logoSize);
       _showAlert(context, 'Success', 'Receipt printed successfully');
     } catch (e) {
       _showAlert(context, 'Error', 'Failed to print: $e');
