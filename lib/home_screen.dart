@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:typed_data';
+
+import 'package:charset_converter/charset_converter.dart';
 import 'package:flutter/material.dart';
 import 'thermal_printer_service.dart';
 import 'receipt_data.dart';
@@ -20,16 +24,48 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Thermal Printer Demo'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            final printerService = ThermalPrinterService();
-            final receipt = ReceiptData.generateSampleReceipt();
-            await printerService.printReceipt(receipt);
-          },
-          child: const Text('Config'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                final printerService = ThermalPrinterService();
+                final receipt = ReceiptData.generateSampleReceipt();
+                try {
+                  await printerService.printReceipt(receipt);
+                } catch (e) {
+                  _showAlert(context, 'Error', 'Failed to print: $e');
+                }
+              },
+              child: const Text('Config'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await _testCharsetConversion();
+              },
+              child: const Text('test'),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  Future<void> _testCharsetConversion() async {
+    String arabicText = "مرحبا بالعالم"; // "Hello World" in Arabic
+
+    // Convert Arabic text to ISO-8859-6 encoding
+    Uint8List encodedBytes =
+        await CharsetConverter.encode("ISO-8859-6", arabicText);
+
+    // Convert back from ISO-8859-6 encoding to UTF-8
+    String decodedText =
+        await CharsetConverter.decode("ISO-8859-6", encodedBytes);
+
+    log("Original Text: $arabicText");
+    log("Encoded Bytes: $encodedBytes");
+    log("Decoded Text: $decodedText");
   }
 
   void _showConfigDialog(BuildContext context) {
